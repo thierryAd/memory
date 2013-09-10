@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+ <meta charset="utf-8" />
+ 
+<title></title>
+
+<style>
+
+#myid{width:500px;height:500px;}
+
+img, .legende{display:none;}
+
+.point{font-size:30px;}
+.point a{text-decoration:none;color:orange;}
+
+</style>
+<script src="jquery-2.0.3.min.js" ></script>
+
+<script type="text/javascript">$(document).ready(function () { 
+	<!--creation des styles-->	var nbreClic=0;
+	var tableau=[];
+	var tableauTemp=[]
+	var tableau=[];
+	var idClic1;
+	var idClic2;
+	var debutJeu;
+	var finJeu;
+	var score;
+	
+	var baseMemory=[1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
+	
+	<!-- creation des elements du jeu-->
+	$('style').append(".carte{background:grey;width:50px;height:35px;padding-top:15px;margin:20px;float:left;text-align:center;}")
+	$('style').append("#jeu{width:450px;background:#003300;overflow:hidden;}")	
+
+	$('body').append('<div id="jeu"></div>')
+	$('body').append('<button id="jouer"> Jouer </button>')
+	
+	$("#jouer").bind('click', function(e){
+		
+		debutJeu=e.timeStamp;
+		score=0;
+		creation();
+		$(this).hide();
+		
+		})
+	
+function creation(){	
+	while(tableauTemp.length <20){
+		y=Math.round(Math.random()*19)
+		if(tableauTemp.indexOf(y) ==-1){tableauTemp.push(y);
+		tableau.push(baseMemory[y]);
+		
+		$('#jeu').append('<div class="carte"><span class="texte">'+baseMemory[y]+'</span></div>');
+		$('.carte .texte').hide();
+		$('#jeu .carte').each(function(index)
+			{
+			$(this).attr('id','carte'+index)
+			
+			})	
+		
+		}
+	}
+	
+	
+	for(i=0;i<21;i++){$('#carte'+i).bind('click',jouer);}
+	
+}
+	function jouer(e){
+  			nbreClic +=1;
+  			  			
+  			if(nbreClic == 1){
+  				
+  				idClic1=e.target.id;
+  				element1= $(this).attr('id').substr(5)
+  				$(this).find('.texte').show(1000, function(){
+  					$(this).hide()});
+  				}
+  			
+  			else if(nbreClic==2){
+  				idClic2=e.target.id;
+  				
+  				
+  			if(idClic1 != idClic2){
+  				element2= $(this).attr('id').substr(5)
+  				$(this).find('.texte').show(1000, function(){$(this).hide();tester(element1,element2)});
+  				nbreClic=0;
+  				}
+  			else{
+  				alert("rejoue, tu as cliqué sur la même case")
+  				idClic2="";	
+  				nbreClic=1;
+  			}
+  			}
+	}
+		
+	
+	function tester(a,b){
+		if([tableau[a]] == tableau[b]){
+			console.log('bien');
+		$('#carte'+a).css('background','red');
+		$('#carte'+b).css('background','red');
+		$("#carte"+a).off();
+		$("#carte"+b).off();
+		score+=1;
+		if(score==1){
+		finJeu=new Date().getTime()
+		console.log(finJeu - debutJeu)
+		secondes=Math.floor((finJeu - debutJeu)/1000)
+		
+		
+		dureeMinutes=Math.floor(secondes/60)
+		dureeSecondes=secondes - dureeMinutes*60
+		
+		console.log(dureeMinutes +" minute(s) et "+dureeSecondes+" secondes");
+		}
+			}
+		else{
+			console.log('rejoue');
+			}
+		
+		}
+		
+		
+		
+		
+	}); </script> 
+
+
+</head>
+
+<body>  </body>
